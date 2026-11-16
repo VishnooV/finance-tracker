@@ -25,6 +25,7 @@
  --sky:#7CB8F2;--rose:#F28DB2;--lime:#B5D96A;
  --pri:#4733C8;--onp:#FFFFFF;--isl:#1B1730;--isx:#FFFFFF;--isf:rgba(255,255,255,.14);
  --amb:#FFB020;--ambx:#3A2600;--red:#FF8585;--redbg:#FFE0E0;--redx:#7E1A1A;
+ --sun:#F5A300;--moon:#4733C8;
  --kb:0px;--spring:cubic-bezier(.34,1.45,.64,1);--soft:cubic-bezier(.34,1.2,.64,1);
  --font:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
  color-scheme:light dark;
@@ -36,6 +37,7 @@
  --pch:#EC8456;--pchbg:#45261A;--pchx:#FFC2A6;
  --sky:#5A9AD8;--rose:#D46F95;--lime:#8FB548;
  --pri:#BFB2FF;--onp:#1A1440;--isl:#F1EEFA;--isx:#16132A;--isf:rgba(22,19,42,.08);
+ --sun:#FFD978;--moon:#D9D0FF;
  --red:#E26464;--redbg:#4A1E1E;--redx:#FFC9C9;
 }}
 :root[data-theme=dark]{
@@ -45,6 +47,7 @@
  --pch:#EC8456;--pchbg:#45261A;--pchx:#FFC2A6;
  --sky:#5A9AD8;--rose:#D46F95;--lime:#8FB548;
  --pri:#BFB2FF;--onp:#1A1440;--isl:#F1EEFA;--isx:#16132A;--isf:rgba(22,19,42,.08);
+ --sun:#FFD978;--moon:#D9D0FF;
  --red:#E26464;--redbg:#4A1E1E;--redx:#FFC9C9;
 }
 :root[data-theme=light]{color-scheme:only light}
@@ -68,6 +71,21 @@ button{border:0;background:none;cursor:pointer}
 .ib{width:46px;height:46px;border-radius:16px;background:var(--card);display:flex;align-items:center;justify-content:center;position:relative;transition:transform .3s var(--spring)}
 .ib:active{transform:scale(.9)}
 .ib svg{width:22px;height:22px}
+.orb{padding:0;touch-action:none;user-select:none;-webkit-user-select:none}
+.oclip{position:absolute;inset:0;border-radius:16px;overflow:hidden}
+.oclip svg{width:46px;height:46px;display:block}
+.obody{transform-box:view-box;transform-origin:23px 52px}
+.osun{fill:var(--sun)}
+.orays{stroke:var(--sun);stroke-width:2;stroke-linecap:round;transform-box:view-box;transform-origin:23px 23px}
+.omoon{fill:var(--moon)}
+.ohz{stroke:var(--mt);stroke-width:1.2;stroke-linecap:round;opacity:0}
+.oring{position:absolute;inset:-5px;width:56px;height:56px;pointer-events:none;overflow:visible}
+.oring rect{fill:none;stroke:var(--pri);stroke-width:2.5;stroke-linecap:round}
+.obadge{position:absolute;right:-4px;bottom:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--pri);color:var(--onp);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .45s var(--spring)}
+.orb.auto .obadge{transform:scale(1)}
+.tw{position:relative}
+.thint{position:absolute;right:56px;top:50%;transform:translateY(-50%) scale(.9);background:var(--ink);color:var(--bg);font-size:12px;padding:6px 10px;border-radius:10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .25s,transform .35s var(--spring)}
+.thint.on{opacity:1;transform:translateY(-50%) scale(1)}
 .dot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--amb);display:none}
 .dot.on{display:block}
 
@@ -212,7 +230,8 @@ button.pill{min-height:32px}
  <header class="top">
   <div><h1>Ledger</h1><div class="per" id="per"></div></div>
   <div class="sp"></div>
-   <button class="ib" id="bMenu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span class="dot" id="mdot"></span></button>
+   <div class="tw"><span class="thint" id="thint">Hold for Auto</span><button class="ib orb" id="bTheme" aria-label="Appearance. Tap to switch light or dark, hold for Auto"><span class="oclip"><svg viewBox="0 0 46 46" aria-hidden="true"><line class="ohz" id="oHz" x1="9" y1="38" x2="37" y2="38"/><g class="obody" id="oSun"><g class="orays" id="oRays"><line x1="23" y1="11" x2="23" y2="13"/><line x1="23" y1="33" x2="23" y2="35"/><line x1="11" y1="23" x2="13" y2="23"/><line x1="33" y1="23" x2="35" y2="23"/><line x1="14.5" y1="14.5" x2="15.9" y2="15.9"/><line x1="30.1" y1="30.1" x2="31.5" y2="31.5"/><line x1="14.5" y1="31.5" x2="15.9" y2="30.1"/><line x1="30.1" y1="15.9" x2="31.5" y2="14.5"/></g><circle class="osun" cx="23" cy="23" r="5.5"/></g><g class="obody" id="oMoon"><path class="omoon" d="M28.5 26.2A7.5 7.5 0 1 1 19.8 15.5a6 6 0 0 0 8.7 10.7z"/></g></svg></span><svg class="oring" viewBox="0 0 56 56" aria-hidden="true"><rect id="oRing" x="2" y="2" width="52" height="52" rx="20" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span class="obadge" aria-hidden="true">A</span></button></div>
+  <button class="ib" id="bMenu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span class="dot" id="mdot"></span></button>
  </header>
 
  <section class="hero" aria-label="Amount owed">
@@ -250,11 +269,12 @@ button.pill{min-height:32px}
 /* Ledger (personal bill tracker for Dad)
    Version constant below is the single source of truth.
    Changelog
+   3.3.0  16 Nov 2026  Orbit appearance toggle in the header: tap switches light and dark with a sunset and moonrise, hold for Auto. Appearance removed from Settings. Ledger checks the clipboard when it opens or comes back to the front and opens a copied card SMS ready to name.
    3.2.1  15 Nov 2026  Appearance switch (Auto, Light, Dark) that overrides browser dark modes. Manual entries with the same amount and day save normally. Currency edits move linked returns too. Send bill can be marked not sent. Paid amounts show two decimals.
    3.2.0  15 Nov 2026  Installable app: manifest, icons and offline start. Shows in the Android Share menu; shared SMS opens straight into the entry box.
    3.1.0  15 Nov 2026  Renamed to Ledger. Theme follows the phone setting. Restore no longer brings back the backup counter or theme. Open copies stay in step. Animations moved to transform and opacity only; list updates in place.
    3.0.0  15 Nov 2026  Rebuild. Cards, platforms and notes removed. Bank rules for Axis, SBI and BOB SMS. Foreign currency with daily auto rates and statement rate override. Command island entry with Enter flow, duplicate warning, refund matching, bulk paste and payment SMS. Hold to settle, auto backup on settle, settled bills with undo. All defects from the v2 review fixed. */
-const VERSION='3.2.1';
+const VERSION='3.3.0';
 const KEY='dadsBill3',OLD_KEY='dadBillData';
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -303,7 +323,7 @@ function norm(p){
  s.lastBilled=p.lastBilled||null;
  for(const k of ['manual','fx','mem'])if(p[k]&&typeof p[k]==='object')for(const [a,b] of Object.entries(p[k])){
   if(k==='mem')s.mem[String(a)]=String(b).slice(0,60);else{const n=num(b);if(n>0)s[k][String(a)]=n}}
- if(p.settings&&typeof p.settings==='object'){s.settings.wa=String(p.settings.wa||'');const nd=parseInt(p.settings.nudgeDays,10);if(nd>0)s.settings.nudgeDays=nd;if(['auto','light','dark'].includes(p.settings.theme))s.settings.theme=p.settings.theme}
+ if(p.settings&&typeof p.settings==='object'){s.settings.wa=String(p.settings.wa||'');const nd=parseInt(p.settings.nudgeDays,10);if(nd>0)s.settings.nudgeDays=nd;if(['auto','light','dark'].includes(p.settings.theme))s.settings.theme=p.settings.theme;if(p.settings.orbHint)s.settings.orbHint=true}
  s.changes=parseInt(p.changes,10)||0;s.lastBackup=p.lastBackup||null;s.lastClip=String(p.lastClip||'');
  return s}
 let corruptRaw=null;
@@ -414,12 +434,27 @@ function odo(str){
 /* ---------- render ---------- */
 const FXC=['var(--pch)','var(--sky)','var(--rose)','var(--lime)'];
 let flyIds=new Set();
+/* orbit appearance toggle */
+const ORB={shown:null};
+const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function orbPlace(el,deg,ms,delay){el.style.transition=ms?'transform '+ms+'ms cubic-bezier(.5,0,.25,1) '+(delay||0)+'ms':'none';el.style.transform='rotate('+deg+'deg)'}
+function orbPaint(e,auto){
+ const b=document.getElementById('bTheme');if(!b)return;b.classList.toggle('auto',!!auto);
+ const sun=document.getElementById('oSun'),moon=document.getElementById('oMoon'),rays=document.getElementById('oRays');
+ if(ORB.shown===e)return;
+ if(ORB.shown===null||reduceMotion()){orbPlace(sun,e==='light'?0:-90,0);orbPlace(moon,e==='dark'?0:90,0);rays.style.transform=e==='dark'?'rotate(-60deg)':'none';ORB.shown=e;return}
+ const out=e==='dark'?sun:moon,inn=e==='dark'?moon:sun,ms=720;
+ orbPlace(inn,90,0);inn.getBoundingClientRect();orbPlace(out,-90,ms,0);orbPlace(inn,0,ms,ms*.12);
+ rays.style.transition='transform '+ms+'ms cubic-bezier(.5,0,.25,1)';rays.style.transform=e==='dark'?'rotate(-60deg)':'rotate(0deg)';
+ const hz=document.getElementById('oHz');if(hz.animate)hz.animate([{opacity:0},{opacity:.55,offset:.3},{opacity:.55,offset:.7},{opacity:0}],{duration:ms*1.1,easing:'ease-in-out'});
+ ORB.shown=e}
 function applyTheme(){
  const t=S.settings.theme||'auto',r=document.documentElement;
  if(t==='auto')r.removeAttribute('data-theme');else r.dataset.theme=t;
  const dark=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
  const cs=document.querySelector('meta[name=color-scheme]');if(cs)cs.content=t==='auto'?'light dark':'only '+t;
- document.querySelectorAll('meta[name=theme-color]').forEach(m=>{m.content=t==='auto'?((m.media||'').includes('dark')?'#110F1A':'#F4F1FB'):(dark?'#110F1A':'#F4F1FB')})}
+ document.querySelectorAll('meta[name=theme-color]').forEach(m=>{m.content=t==='auto'?((m.media||'').includes('dark')?'#110F1A':'#F4F1FB'):(dark?'#110F1A':'#F4F1FB')});
+ orbPaint(dark?'dark':'light',t==='auto')}
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme());
 function render(){
  applyTheme();
@@ -568,8 +603,9 @@ async function tapIsland(){
  if(IS)return;openEntry({});
  if(!(navigator.clipboard&&navigator.clipboard.readText))return;
  try{const t=await navigator.clipboard.readText();if(!t||IS!=='entry'||EF.amount)return;
-  if(t.slice(0,500)===S.lastClip){$('#eHint').textContent='Clipboard SMS is already added';return}
-  const msgs=splitMsgs(t);if(msgs.length)handleMsgs(msgs,t,true)}catch(e){}}
+  const msgs=splitMsgs(t);if(!msgs.length)return;
+  if(msgs.every(m=>m.kind!=='credit'&&findDup({cur:m.cur||'INR',amount:m.kind==='refund'?-m.amount:m.amount,date:m.date,merchant:m.merchant}))){$('#eHint').textContent='The SMS on your clipboard is already added';return}
+  handleMsgs(msgs,t,true)}catch(e){}}
 isl.onclick=tapIsland;isl.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tapIsland()}};
 function saveEntry(){
  if(IS!=='entry')return;
@@ -711,6 +747,17 @@ async function copyText(t){try{await navigator.clipboard.writeText(t);return tru
 function closeMenu(){$('#menu').classList.remove('on')}
 $('#bMenu').onclick=e=>{e.stopPropagation();$('#menu').classList.toggle('on')};
 document.addEventListener('click',e=>{if(!e.target.closest('#menu')&&!e.target.closest('#bMenu'))closeMenu()});
+(function(){const b=$('#bTheme'),ring=$('#oRing');let t0=0,raf=0,held=false,down=false;const HOLD=600;
+ const prog=p=>ring.setAttribute('stroke-dashoffset',100-100*p);
+ const eff=()=>{const t=S.settings.theme||'auto';return t==='auto'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):t};
+ const step=()=>{const p=Math.min(1,(performance.now()-t0)/HOLD);prog(p);if(p>=1){held=true;S.settings.theme='auto';save(false);if(navigator.vibrate)navigator.vibrate(25);toast('Appearance follows your phone');setTimeout(()=>prog(0),260);return}raf=requestAnimationFrame(step)};
+ const flip=()=>{S.settings.theme=eff()==='dark'?'light':'dark';save(false);
+  if(!S.settings.orbHint){S.settings.orbHint=true;persist();const h=$('#thint');setTimeout(()=>{h.classList.add('on');setTimeout(()=>h.classList.remove('on'),1800)},750)}};
+ b.addEventListener('pointerdown',e=>{if(e.button>0)return;e.preventDefault();down=true;held=false;t0=performance.now();raf=requestAnimationFrame(step)});
+ const up=ok=>{if(!down)return;down=false;cancelAnimationFrame(raf);prog(0);if(ok&&!held)flip()};
+ b.addEventListener('pointerup',()=>up(true));b.addEventListener('pointerleave',()=>up(false));b.addEventListener('pointercancel',()=>up(false));
+ b.addEventListener('contextmenu',e=>e.preventDefault());
+ b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}else if(e.key==='a'||e.key==='A'){S.settings.theme='auto';save(false)}})})();
 $('#menu').onclick=async e=>{const b=e.target.closest('[data-m]');if(!b)return;closeMenu();const m=b.dataset.m;
  if(m==='history')openHistory();else if(m==='settings')openSettings();else if(m==='backup')backup(false);
  else if(m==='copy'){if(!canBill())return;toast(await copyText(billText())?'Bill text copied':'Could not copy on this phone')}};
@@ -724,14 +771,12 @@ function openHistory(){
  if($('#hUndo'))$('#hUndo').onclick=undoSettle}
 function openSettings(){
  openPanel('<h2>Settings</h2>'+
-  '<div class="fl">Appearance</div><div class="seg" id="stTh">'+[['auto','Auto'],['light','Light'],['dark','Dark']].map(([v,l])=>'<button data-th="'+v+'" class="'+((S.settings.theme||'auto')===v?'on':'')+'">'+l+'</button>').join('')+'</div>'+
   '<div class="fl">Dad\'s WhatsApp number</div><input class="in" id="stWa" inputmode="tel" placeholder="98765 43210" value="'+esc(S.settings.wa)+'">'+
   '<div class="fl">Remind me when entries sit unbilled for this many days</div><input class="in" id="stNd" inputmode="numeric" value="'+S.settings.nudgeDays+'">'+
   '<div class="fl">Backups. Last one: '+(S.lastBackup?dLong(iso(new Date(S.lastBackup))):'none yet')+'</div>'+
   '<div class="prow"><button class="pb pri" id="stBk">Back up now</button><button class="pb" id="stRs">Restore a backup</button></div>'+
   '<div class="fl">Learnt item names: '+Object.keys(S.mem).length+'</div><div class="prow"><button class="pb" id="stMem">Forget learnt names</button></div>'+
   '<div class="ver">Ledger version '+VERSION+'</div>');
- $('#stTh').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;S.settings.theme=b.dataset.th;persist();render();$('#stTh').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
  $('#stWa').oninput=e=>{S.settings.wa=e.target.value.trim();persist()};
  $('#stNd').oninput=e=>{const v=parseInt(e.target.value,10);if(v>0){S.settings.nudgeDays=v;persist();render()}};
  $('#stBk').onclick=()=>backup(false);$('#stRs').onclick=()=>$('#fRestore').click();
@@ -753,11 +798,29 @@ $('#fRestore').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)re
 /* ---------- keyboard awareness ---------- */
 (function(){const vv=window.visualViewport;if(!vv)return;const f=()=>{const k=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);document.documentElement.style.setProperty('--kb',k+'px');fit()};vv.addEventListener('resize',f);vv.addEventListener('scroll',f)})();
 
+/* ---------- clipboard check on open ---------- */
+let clipBusy=false,clipLast=0;
+async function autoClip(){
+ if(clipBusy||IS||panel.classList.contains('on')||document.visibilityState!=='visible')return;
+ if(Date.now()-clipLast<1500)return;clipLast=Date.now();
+ if(!(navigator.clipboard&&navigator.clipboard.readText&&navigator.permissions&&navigator.permissions.query))return;
+ clipBusy=true;
+ try{const st=await navigator.permissions.query({name:'clipboard-read'});if(st.state!=='granted')return;
+  const t=await navigator.clipboard.readText();if(!t||IS)return;
+  const key=t.slice(0,500);if(key===S.lastClip)return;
+  const msgs=splitMsgs(t);if(!msgs.length)return;
+  const fresh=msgs.filter(m=>!findDup({cur:m.cur||'INR',amount:m.kind==='refund'?-m.amount:m.amount,date:m.date,merchant:m.merchant}));
+  if(!fresh.length&&msgs.every(m=>m.kind!=='credit')){S.lastClip=key;persist();return}
+  S.lastClip=key;persist();openEntry({});handleMsgs(msgs,t,true)}catch(e){}finally{clipBusy=false}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(autoClip,250)});
+window.addEventListener('focus',()=>setTimeout(autoClip,250));
+
 /* ---------- start ---------- */
 if(corruptRaw){$('#banner').innerHTML='<div class="banner">Saved data on this phone could not be read, so the app started empty. Your old data is kept.<button id="bnDl">Download the old data</button></div>';
  $('#bnDl').onclick=()=>{const u=URL.createObjectURL(new Blob([corruptRaw],{type:'text/plain'})),a=document.createElement('a');a.href=u;a.download='ledger-unreadable-'+today()+'.txt';a.click()}}
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
 render();fetchRates();
+setTimeout(()=>{if(!new URLSearchParams(location.search).get('text'))autoClip()},500);
 (function(){const q=new URLSearchParams(location.search);const t=[q.get('title'),q.get('text')||q.get('sms'),q.get('url')].filter(Boolean).join('\n').trim();
  if(!t)return;history.replaceState(null,'',location.pathname);
  const msgs=splitMsgs(t);if(msgs.length){openEntry({},false);handleMsgs(msgs,t,true)}else{openEntry({},false);const p=$('#ePaste');if(p){p.value=t;$('#eHint').textContent='No amount found in what was shared. Fill it in below.'}}})();
